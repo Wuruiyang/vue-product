@@ -9,7 +9,14 @@ export default {}
 </script>
 
 <style lang="scss">
-body {
-  background-color: #ccc;
+* {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+html,
+body,
+#app {
+  height: 100%;
 }
 </style>
