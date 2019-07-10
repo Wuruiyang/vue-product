@@ -51,7 +51,6 @@ export default {
       this.$refs.form.resetFields()
     },
     login (form) {
-      console.log(111)
       this.$refs.form.validate(isValid => {
         if (!isValid) {
           return false
@@ -90,12 +89,17 @@ export default {
 </script>
 
 <style>
+.login {
+  overflow: hidden;
+  height: 100%;
+}
 .el-form {
   width: 400px;
   background-color: #fff;
   margin: 200px auto;
   padding: 75px 40px 15px 40px;
   border-radius: 20px;
+  box-sizing: border-box;
 }
 body {
   background-color: #ccc;
