@@ -49,7 +49,10 @@
           </el-submenu>
         </el-menu>
       </el-aside>
-      <el-main>Main</el-main>
+      <el-main>
+        <!-- 一些主要的组件 -->
+        <router-view></router-view>
+      </el-main>
     </el-container>
   </el-container>
 </template>
@@ -67,7 +70,7 @@ export default {
         .then(() => {
           // 清空token,跳转到login,提示已经退出登录
           localStorage.removeItem('token')
-          this.$route.push('/login')
+          this.$router.push('login')
           this.$message.success('已退出')
         })
         .catch(() => {

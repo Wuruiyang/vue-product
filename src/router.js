@@ -2,12 +2,20 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Index from './components/Index.vue'
 import Login from './components/Login.vue'
+import User from './components/User.vue'
 
 Vue.use(VueRouter)
 
 const router = new VueRouter({
   routes: [
-    { path: '/', component: Index, name: 'index' },
+    {
+      path: '/',
+      component: Index,
+      name: 'index',
+      children: [
+        { path: '/user', component: User, name: 'user' }
+      ]
+    },
     { path: '/login', component: Login, name: 'login' }
   ]
 })

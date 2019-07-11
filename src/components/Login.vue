@@ -24,7 +24,6 @@
 
 <script>
 // 引入axios
-import axios from 'axios'
 export default {
   data () {
     return {
@@ -56,33 +55,31 @@ export default {
         if (!isValid) {
           return false
         }
-        axios
-          .post('http://localhost:8888/api/private/v1/login', this.form)
-          .then(res => {
-            console.log(res.data)
-            // 解构
-            const {
-              meta: { msg, status },
-              data: { token }
-            } = res.data
-            if (status === 200) {
-              this.$message({
-                message: '登录成功',
-                type: 'success',
-                duration: 1000
-              })
-              // 存储token
-              localStorage.setItem('token', token)
-              // 跳转页面
-              this.$router.push({ path: '/' })
-            } else {
-              // this.$message({
-              //   message: msg,
-              //   type: 'error'
-              // })
-              return this.$message.error(msg)
-            }
-          })
+        this.axios.post('login', this.form).then(res => {
+          // console.log(res.data)
+          // 解构
+          const {
+            meta: { msg, status },
+            data: { token }
+          } = res
+          if (status === 200) {
+            this.$message({
+              message: '登录成功',
+              type: 'success',
+              duration: 1000
+            })
+            // 存储token
+            localStorage.setItem('token', token)
+            // 跳转页面
+            this.$router.push({ path: '/' })
+          } else {
+            // this.$message({
+            //   message: msg,
+            //   type: 'error'
+            // })
+            return this.$message.error(msg)
+          }
+        })
       })
     }
   }
