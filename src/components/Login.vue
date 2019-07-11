@@ -7,6 +7,7 @@
       el-form-item: 每一行的表单元素
     -->
     <el-form ref="form" :model="form" :rules="rules" label-width="80px" status-icon>
+      <img src="../assets/avatar.jpg" />
       <el-form-item label="用户名" prop="username">
         <el-input v-model="form.username"></el-input>
       </el-form-item>
@@ -88,7 +89,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 .login {
   overflow: hidden;
   height: 100%;
@@ -100,6 +101,16 @@ export default {
   padding: 75px 40px 15px 40px;
   border-radius: 20px;
   box-sizing: border-box;
+  position: relative;
+
+  img {
+    border-radius: 50%;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: -66px;
+    border: 8px solid #fff;
+  }
 }
 body {
   background-color: #ccc;
