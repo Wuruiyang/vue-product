@@ -86,7 +86,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .login {
   overflow: hidden;
   height: 100%;
@@ -109,6 +109,7 @@ export default {
     border: 8px solid #fff;
   }
 }
+html,
 body {
   background-color: #ccc;
 }
