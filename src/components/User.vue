@@ -62,25 +62,20 @@ export default {
     this.getUserList()
   },
   methods: {
-    getUserList () {
-      this.axios
-        .get('users', {
-          // 在params里面写需要传递的参数
-          params: {
-            query: this.query,
-            pagenum: this.pagenum,
-            pagesize: this.pagesize
-          }
-          // 原本这里需要配置header: {Authorization: localStorage.getItem('token')}
-        })
-        .then(res => {
-          // console.log(res)
-          const { meta, data } = res
-          if (meta.status === 200) {
-            this.tableData = data.users
-            this.total = data.total
-          }
-        })
+    async getUserList () {
+      const { meta, data } = await this.axios.get('users', {
+        // 在params里面写需要传递的参数
+        params: {
+          query: this.query,
+          pagenum: this.pagenum,
+          pagesize: this.pagesize
+        }
+        // 原本这里需要配置header: {Authorization: localStorage.getItem('token')}
+      })
+      if (meta.status === 200) {
+        this.tableData = data.users
+        this.total = data.total
+      }
     },
     handleSizeChange (val) {
       this.pagesize = val
@@ -91,38 +86,35 @@ export default {
       this.pagenum = val
       this.getUserList()
     },
-    deleteuser (id) {
-      console.log(id)
-      this.axios
-        .delete(`users/${id}`)
-        .then(res => {
-          const { meta } = res
-          if (meta.status === 200) {
-            this.$message.success('已删除')
-            // 判断，如果当前页就剩下一条，应该让pagenum -1
-            if (this.tableData.length === 1 && this.pagenum > 1) {
-              this.pagenum--
-            }
-            this.getUserList()
-          } else {
-            this.$message.error(meta.msg)
+    async deleteuser (id) {
+      try {
+        const { meta } = await this.axios.delete(`users/${id}`)
+        if (meta.status === 200) {
+          this.$message.success('已删除')
+          // 判断，如果当前页就剩下一条，应该让pagenum -1
+          if (this.tableData.length === 1 && this.pagenum > 1) {
+            this.pagenum--
           }
-        })
-        .catch(() => {
-          this.$message('操作取消')
-        })
+          this.getUserList()
+        } else {
+          this.$message.error(meta.msg)
+        }
+      } catch (error) {
+        this.$message('操作取消')
+      }
     },
     queryUser () {
       this.getUserList()
     },
-    // 改变状态
-    changestate (id, state) {
-      this.axios.put(`users/${id}/state/${state}`).then(res => {
-        const { status } = res.meta
-        if (status === 200) {
-          this.$message.success('修改成功')
-        }
-      })
+    async changestate (id, state) {
+      const res = await this.axios.put(`users/${id}/state/${state}`)
+      const { status, msg } = res.meta
+      if (status === 200) {
+        this.$message.success('修改成功')
+        this.getUserList()
+      } else {
+        this.$message.error(msg)
+      }
     }
   }
 }
