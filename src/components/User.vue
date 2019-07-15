@@ -75,7 +75,6 @@
     <el-dialog title="修改用户" :visible.sync="editDialogVisible" width="50%">
       <el-form ref="editForm" :rules="rules" :model="editForm" label-width="80px" status-icon>
         <el-form-item label="用户名">
-          <!-- <el-input placeholder="请输入用户名" v-model="editForm.username"></el-input> -->
           <el-tag type="info">{{editForm.username}}</el-tag>
         </el-form-item>
         <el-form-item label="邮箱" prop="email">
