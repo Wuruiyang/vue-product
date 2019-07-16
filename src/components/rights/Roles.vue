@@ -5,7 +5,7 @@
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>角色管理</el-breadcrumb-item>
     </el-breadcrumb>
-    <el-button type="success" @click="addVisible = true">添加角色</el-button>
+    <el-button type="success" @click="showAddDialog">添加角色</el-button>
     <el-table :data="rolesData" style="width: 100%">
       <el-table-column type="expand">
         <template v-slot:default="{ row }">
@@ -37,7 +37,14 @@
       <el-table-column label="描述" prop="roleDesc"></el-table-column>
       <el-table-column label="操作">
         <template v-slot:default="{ row }">
-          <el-button type="primary" icon="el-icon-edit" plain circle size="small"></el-button>
+          <el-button
+            type="primary"
+            icon="el-icon-edit"
+            plain
+            circle
+            size="small"
+            @click="showEditDialog(row)"
+          ></el-button>
           <el-button
             type="danger"
             icon="el-icon-delete"
@@ -80,9 +87,9 @@
         <el-button type="primary" @click="delUserRoles">确 定</el-button>
       </span>
     </el-dialog>
-    <!-- 添加角色的dialog -->
-    <el-dialog title="添加角色" :visible.sync="addVisible" width="40%">
-      <el-form :model="addRoles">
+    <!-- 添加角色和修改角色合并的的dialog -->
+    <el-dialog :title="title" :visible.sync="addVisible" width="40%">
+      <el-form :model="addRoles" :rules="rules" ref="form">
         <el-form-item label="角色名称">
           <el-input v-model="addRoles.roleName" autocomplete="off"></el-input>
         </el-form-item>
@@ -103,6 +110,11 @@ export default {
   created () {
     this.getRolesList()
   },
+  computed: {
+    title () {
+      return this.addRoles.roleId ? '修改角色' : '添加角色'
+    }
+  },
   data () {
     return {
       rolesData: [],
@@ -117,7 +129,16 @@ export default {
       roleId: '',
       addRoles: {
         roleName: '',
-        roleDesc: ''
+        roleDesc: '',
+        roleId: ''
+      },
+      rules: {
+        roleName: [
+          { required: true, message: '请输入角色名称', trigger: ['blur'] }
+        ],
+        roleDesc: [
+          { required: true, message: '请输入角色描述', trigger: ['blur'] }
+        ]
       }
     }
   },
@@ -193,13 +214,40 @@ export default {
         this.$message.error(msg)
       }
     },
+    showAddDialog () {
+      this.addVisible = true
+      this.addRoles.roleName = ''
+      this.addRoles.roleDesc = ''
+      this.addRoles.roleId = ''
+    },
+    showEditDialog (row) {
+      this.addVisible = true
+      console.log(row)
+      // 回显信息
+      this.addRoles.roleName = row.roleName
+      this.addRoles.roleDesc = row.roleDesc
+      this.addRoles.roleId = row.id
+    },
     async addUserRoles () {
-      const res = await this.axios.post('roles', this.addRoles)
-      const { status, msg } = res.meta
-      if (status === 201) {
-        this.$message.success(msg)
-        this.addVisible = false
-        this.getRolesList()
+      try {
+        await this.$refs.form.validate()
+
+        const { roleId } = this.addRoles
+        let method = roleId ? 'put' : 'post'
+        let url = roleId ? `roles/${roleId}` : `roles`
+
+        const res = await this.axios[method](url, this.addRoles)
+        const { status, msg } = res.meta
+        if (status >= 200) {
+          this.$message.success(msg)
+          this.addVisible = false
+          this.$refs.form.resetFields()
+          this.getRolesList()
+        } else {
+          this.$message.error(msg)
+        }
+      } catch {
+        return false
       }
     }
   }

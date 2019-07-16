@@ -2,9 +2,9 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Index from './components/Index.vue'
 import Login from './components/Login.vue'
-import User from './components/User.vue'
-import Rights from './components/Rights.vue'
-import Roles from './components/Roles.vue'
+import User from './components/users/User.vue'
+import Rights from './components/rights/Rights.vue'
+import Roles from './components/rights/Roles.vue'
 
 Vue.use(VueRouter)
 
