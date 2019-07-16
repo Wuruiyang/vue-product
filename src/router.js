@@ -5,6 +5,7 @@ import Login from './components/Login.vue'
 import User from './components/users/User.vue'
 import Rights from './components/rights/Rights.vue'
 import Roles from './components/rights/Roles.vue'
+import Categories from './components/products/Categories.vue'
 
 Vue.use(VueRouter)
 
@@ -15,9 +16,10 @@ const router = new VueRouter({
       component: Index,
       name: 'index',
       children: [
-        { path: '/user', component: User, name: 'user' },
+        { path: '/users', component: User, name: 'user' },
         { path: '/rights', component: Rights, name: 'rights' },
-        { path: '/roles', component: Roles, name: 'roles' }
+        { path: '/roles', component: Roles, name: 'roles' },
+        { path: '/categories', component: Categories, name: 'categories' }
       ]
     },
     { path: '/login', component: Login, name: 'login' }

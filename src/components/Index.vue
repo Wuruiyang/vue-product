@@ -13,38 +13,22 @@
     <el-container>
       <el-aside width="200px">
         <el-menu
+          :default-active="active"
           unique-opened
-          default-active="2"
           class="el-menu-vertical-demo"
           background-color="#545c64"
           text-color="#fff"
           active-text-color="#ffd04b"
           router
         >
-          <!-- 用户管理 -->
-          <el-submenu index="1">
+          <el-submenu v-for="manage in data" :index="manage.path" :key="manage.id">
             <template slot="title">
               <i class="el-icon-location"></i>
-              <span>用户管理</span>
+              <span>{{manage.authName}}</span>
             </template>
-            <el-menu-item index="user">
+            <el-menu-item v-for="item in manage.children" :index="item.path" :key="item.id">
               <i class="el-icon-menu"></i>
-              用户列表
-            </el-menu-item>
-          </el-submenu>
-          <!-- 权限管理 -->
-          <el-submenu index="2">
-            <template slot="title">
-              <i class="el-icon-location"></i>
-              <span>权限管理</span>
-            </template>
-            <el-menu-item index="roles">
-              <i class="el-icon-location"></i>
-              角色列表
-            </el-menu-item>
-            <el-menu-item index="rights">
-              <i class="el-icon-location"></i>
-              权限列表
+              <span>{{item.authName}}</span>
             </el-menu-item>
           </el-submenu>
         </el-menu>
@@ -59,6 +43,23 @@
 
 <script>
 export default {
+  async created () {
+    const { data, meta } = await this.axios.get('menus')
+    // console.log(data)
+    if (meta.status === 200) {
+      this.data = data
+    }
+  },
+  data () {
+    return {
+      data: []
+    }
+  },
+  computed: {
+    active () {
+      return this.$route.path.slice(1)
+    }
+  },
   methods: {
     // this.$confirm('' , '', {...}).then().catch()
     // 参数1:提示信息 参数2:提示头 参数3{}  .then成功的回调函数,.catch失败的函数
