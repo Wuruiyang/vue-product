@@ -5,6 +5,10 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import axios from 'axios'
 import moment from 'moment'
+import quillEditor from 'vue-quill-editor'
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
 
 Vue.config.productionTip = false
 
@@ -31,6 +35,7 @@ axios.interceptors.response.use(function (response) {
 
 // elementUI是基于vue的插件,需要use()
 Vue.use(ElementUI)
+Vue.use(quillEditor)
 
 // 添加一个过滤,过滤数字->日期
 Vue.filter('dataFilter', function (value) {
