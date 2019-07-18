@@ -4,6 +4,7 @@ import router from './router'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import axios from 'axios'
+import moment from 'moment'
 
 Vue.config.productionTip = false
 
@@ -30,6 +31,11 @@ axios.interceptors.response.use(function (response) {
 
 // elementUI是基于vue的插件,需要use()
 Vue.use(ElementUI)
+
+// 添加一个过滤,过滤数字->日期
+Vue.filter('dataFilter', function (value) {
+  return moment(value * 1000).format('YYYY-MM-DD HH:mm:ss')
+})
 
 new Vue({
   router,
