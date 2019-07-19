@@ -4,9 +4,17 @@ module.exports = {
   lintOnSave: true,
   devServer: {
     // 自动打开浏览器
-    open: true
+    open: true,
     // 端口
     // port: 3000
+    // 配置反向代理
+    proxy: {
+      '/aaa': {
+        target: 'http://localhost:8888/api/private/v1/',
+        // 使用正则 替换/aaa为''
+        pathRewrite: { '^/aaa': '' }
+      }
+    }
   },
   configureWebpack: {
     // 配置的是排除打包的选项

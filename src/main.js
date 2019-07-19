@@ -13,10 +13,11 @@ import 'quill/dist/quill.bubble.css'
 
 Vue.config.productionTip = false
 
-// 给Vue强行添加福安息
+// 给Vue强行添加axios
 Vue.prototype.axios = axios
 // 给axios配上baseurl,只要设置了全局默认的base_url,以后的请求会自动拼接上base_url
-axios.defaults.baseURL = 'http://localhost:8888/api/private/v1/'
+// axios.defaults.baseURL = 'http://localhost:8888/api/private/v1/'
+axios.defaults.baseURL = '/aaa'
 // 配置拦截器,request之前设置请求头
 axios.interceptors.request.use(function (config) {
   // 给config配置 token
