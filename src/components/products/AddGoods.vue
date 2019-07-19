@@ -92,6 +92,7 @@ export default {
       headers: {
         Authorization: localStorage.getItem('token')
       },
+      fileList: [],
       dialogImageUrl: '',
       dialogVisible: false,
       disabled: false
@@ -116,10 +117,13 @@ export default {
       this.active = +v.index
     },
     handleRemove (file, fileList) {
-      console.log(file)
-      console.log(fileList)
-      file.uid = null
-      this.form.pics = []
+      // 删除fileList的图片
+      const index = this.fileList.findIndex(item => item.uid === false)
+      this.fileList.splice(index, 1)
+      // 删除file的图片
+      const path = file.response.data.tmp_path
+      const index2 = this.form.pics.findIndex(item => item.pic === path)
+      this.form.pics.splice(index2, 1)
     },
     handlePictureCardPreview (file) {
       this.dialogImageUrl = file.url
@@ -131,6 +135,7 @@ export default {
         this.form.pics.push({
           pics: res.data.tmp_path
         })
+        this.fileList = fileList
       }
     },
     async complete () {
